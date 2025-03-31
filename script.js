@@ -1,24 +1,79 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Remove the initial sorting code from outside and place it here
-    const rutas = document.querySelectorAll('ul li');
-    const rutasArray = Array.from(rutas);
-    const rutasOrdenadas = rutasArray.sort((a, b) => {
-        const nombreA = a.textContent.toLowerCase();
-        const nombreB = b.textContent.toLowerCase();
-        return nombreA < nombreB ? -1 : (nombreA > nombreB ? 1 : 0);
-    });
-
-    const ulOrdenado = document.createElement('ul');
-    rutasOrdenadas.forEach(ruta => {
-        ulOrdenado.appendChild(ruta);
-    });
-    document.querySelector('ul').replaceWith(ulOrdenado);
-
-    // Now initialize the checkboxes and button
+    // Initialize elements
     const selectAllCheckbox = document.getElementById('selectAll');
     const checkboxes = document.querySelectorAll('ul input[type="checkbox"]');
+    const sendEmailButton = document.getElementById('sendEmail');
+    const unselectAllButton = document.getElementById('unselectAll');
 
-    // Handle "Select All" functionality
+    // Location data
+    const locationData = {
+        'altabrisa': {
+            address: 'Plaza Altabrisa, Villahermosa',
+            amount: '$200'
+        },
+        'americas': {
+            address: 'Plaza Americas, Villahermosa',
+            amount: '$200'
+        },
+        'angeles': {
+            address: 'Los Ángeles #123, Villahermosa',
+            amount: '$200'
+        },
+        'centro': {
+            address: 'Centro #456, Villahermosa',
+            amount: '$200'
+        },
+        'cristal': {
+            address: 'Plaza Cristal, Villahermosa',
+            amount: '$200'
+        },
+        'galerias': {
+            address: 'Galerías Tabasco, Villahermosa',
+            amount: '$200'
+        },
+        'deportiva': {
+            address: 'Av. Deportiva #345, Villahermosa',
+            amount: '$200'
+        },
+        'guayabal': {
+            address: 'Calle Guayabal #678, Villahermosa',
+            amount: '$200'
+        },
+        'olmeca': {
+            address: 'Av. Olmeca #901, Villahermosa',
+            amount: '$200'
+        },
+        'pista': {
+            address: 'Av. Principal #432, Villahermosa',
+            amount: '$200'
+        },
+        'usuma': {
+            address: 'Calle Usumacinta #765, Villahermosa',
+            amount: '$200'
+        },
+        'movil-deportiva': {
+            address: 'Av. Deportiva #098, Villahermosa',
+            amount: '$200'
+        },
+        'movil-venta': {
+            address: 'Carretera La Venta Km 2',
+            amount: '$200'
+        },
+        'walmart-carrizal': {
+            address: 'Av. Carrizal #321, Villahermosa',
+            amount: '$200'
+        },
+        'walmart-deportiva': {
+            address: 'Av. Deportiva #654, Villahermosa',
+            amount: '$200'
+        },
+        'walmart-universidad': {
+            address: 'Av. Universidad #987, Villahermosa',
+            amount: '$200'
+        }
+    };
+
+    // Checkbox event handlers
     selectAllCheckbox.addEventListener('change', () => {
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAllCheckbox.checked;
@@ -26,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveSelections();
     });
 
-    // Handle individual checkbox changes
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             saveSelections();
@@ -34,81 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Load saved selections
-    loadSelections();
+    // Warning modal handler
+    document.getElementById('warningOk').addEventListener('click', () => {
+        document.getElementById('warningModal').style.display = 'none';
+    });
 
-    // Add this after the existing event listeners
-    const sendEmailButton = document.getElementById('sendEmail');
-    // Add this after the existing event listeners
-    const locationData = {
-        'altabrisa': {
-            address: 'Av. Bonanza #123, Col. Altabrisa, Villahermosa',
-            amount: '$200'
-        },
-        'americas': {
-            address: 'Av. Las Américas #456, Col. Las Américas, Villahermosa',
-            amount: '$200'
-        },
-        'angeles': {
-            address: 'Av. Los Ángeles #789, Col. Los Ángeles, Villahermosa',
-            amount: '$200'
-        },
-        'centro': {
-            address: 'Calle Madero #234, Col. Centro, Villahermosa',
-            amount: '$200'
-        },
-        'cristal': {
-            address: 'Av. Principal #567, Col. El Cristal, Villahermosa',
-            amount: '$200'
-        },
-        'galerias': {
-            address: 'Plaza Galerías #890, Col. Galerías, Villahermosa',
-            amount: '$200'
-        },
-        'deportiva': {
-            address: 'Av. Deportiva #345, Col. Deportiva, Villahermosa',
-            amount: '$200'
-        },
-        'guayabal': {
-            address: 'Calle Guayabal #678, Col. Guayabal, Villahermosa',
-            amount: '$200'
-        },
-        'olmeca': {
-            address: 'Av. Olmeca #901, Col. Olmeca, Villahermosa',
-            amount: '$200'
-        },
-        'pista': {
-            address: 'Av. Principal #432, Col. Pista de Hielo, Villahermosa',
-            amount: '$200'
-        },
-        'usuma': {
-            address: 'Calle Usumacinta #765, Col. Usuma, Villahermosa',
-            amount: '$200'
-        },
-        'movil-deportiva': {
-            address: 'Av. Deportiva #098, Col. Deportiva, Villahermosa',
-            amount: '$200'
-        },
-        'movil-venta': {
-            address: 'Carretera La Venta Km 2, La Venta',
-            amount: '$200'
-        },
-        'walmart-carrizal': {
-            address: 'Av. Carrizal #321, Col. Carrizal, Villahermosa',
-            amount: '$200'
-        },
-        'walmart-deportiva': {
-            address: 'Av. Deportiva #654, Col. Deportiva, Villahermosa',
-            amount: '$200'
-        },
-        'walmart-universidad': {
-            address: 'Av. Universidad #987, Col. Magisterial, Villahermosa',
-            amount: '$200'
-        }
-    };
-
-    // Replace the sendEmailButton click event with this:
-    // Replace the alert in the sendEmailButton click handler
+    // Main send email functionality
     sendEmailButton.addEventListener('click', () => {
         const selectedLocations = [];
         const today = new Date().toLocaleDateString('es-MX');
@@ -125,37 +110,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
             }
         });
-    
-        if (selectedLocations.length === 0) {
-            const warningModal = document.getElementById('warningModal');
-            const warningOk = document.getElementById('warningOk');
-            
-            warningModal.style.display = 'block';
-            
-            warningOk.onclick = () => {
-                warningModal.style.display = 'none';
-            };
 
-            // Close warning modal when clicking outside
-            window.onclick = (event) => {
-                if (event.target === warningModal) {
-                    warningModal.style.display = 'none';
-                }
-            };
+        if (selectedLocations.length === 0) {
+            document.getElementById('warningModal').style.display = 'block';
             return;
         }
 
-        // Show email modal
-        const modal = document.getElementById('emailModal');
-        const confirmBtn = document.getElementById('confirmEmail');
-        const cancelBtn = document.getElementById('cancelEmail');
-        const emailInput = document.getElementById('emailInput');
-        
-        modal.style.display = 'block';
-        emailInput.value = '';
+        const previewModal = document.getElementById('previewModal');
+        const previewContent = document.getElementById('previewContent');
+        previewContent.textContent = selectedLocations.join('\n');
+        previewModal.style.display = 'block';
 
-        confirmBtn.onclick = () => {
+        // Modal button handlers
+        document.getElementById('closePreview').onclick = () => {
+            previewModal.style.display = 'none';
+            document.getElementById('emailModal').style.display = 'block';
+        };
+
+        document.getElementById('confirmEmail').onclick = () => {
+            const emailInput = document.getElementById('emailInput');
             const recipientEmail = emailInput.value.trim();
+            
             if (!recipientEmail) {
                 alert('Por favor ingrese un correo electrónico');
                 return;
@@ -168,22 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     `${selectedLocations.join('\n')}\n\n` +
                     `Saludos cordiales.`
                 );
-            modal.style.display = 'none';
+            document.getElementById('emailModal').style.display = 'none';
             window.location.href = mailtoLink;
         };
 
-        cancelBtn.onclick = () => {
-            modal.style.display = 'none';
-        };
-
-        // Close modal when clicking outside
-        window.onclick = (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
+        document.getElementById('cancelEmail').onclick = () => {
+            document.getElementById('emailModal').style.display = 'none';
         };
     });
 
+    // Utility functions
     function saveSelections() {
         const selections = {};
         checkboxes.forEach(checkbox => {
@@ -204,57 +173,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
         selectAllCheckbox.checked = allChecked;
     }
-    // Add after the selectAll checkbox initialization
-    const unselectAllButton = document.getElementById('unselectAll');
 
-    // Add the unselect functionality
+    // Initialize
+    loadSelections();
+
+    // Add unselect functionality
     unselectAllButton.addEventListener('click', () => {
         checkboxes.forEach(checkbox => {
             checkbox.checked = false;
         });
         selectAllCheckbox.checked = false;
         saveSelections();
-    });
-    // Add after your existing event listeners
-    const previewButton = document.getElementById('previewSelection');
-    
-    previewButton.addEventListener('click', () => {
-        const selectedLocations = [];
-        
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                const locationId = checkbox.id;
-                const locationName = checkbox.nextElementSibling.textContent;
-                const data = locationData[locationId];
-                selectedLocations.push(
-                    `📍 ${locationName}\n` +
-                    `   • Dirección: ${data.address}\n` +
-                    `   • Monto autorizado: ${data.amount}\n`
-                );
-            }
-        });
-
-        if (selectedLocations.length === 0) {
-            const warningModal = document.getElementById('warningModal');
-            warningModal.style.display = 'block';
-            return;
-        }
-
-        const previewModal = document.getElementById('previewModal');
-        const previewContent = document.getElementById('previewContent');
-        const closePreview = document.getElementById('closePreview');
-
-        previewContent.textContent = selectedLocations.join('\n');
-        previewModal.style.display = 'block';
-
-        closePreview.onclick = () => {
-            previewModal.style.display = 'none';
-        };
-
-        window.onclick = (event) => {
-            if (event.target === previewModal) {
-                previewModal.style.display = 'none';
-            }
-        };
     });
 });
