@@ -1,0 +1,179 @@
+/* Global Styles */
+* {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+body {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Controls Section */
+.controls {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+/* List Styles */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Form Elements */
+label {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+input {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+button {
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* Submit Section */
+.submit-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#sendEmail {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#sendEmail:hover {
+    background-color: #45a049;
+}
+
+#unselectAll {
+    margin-left: 20px;
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+#unselectAll:hover {
+    background-color: #d32f2f;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.modal-content h3 {
+    font-weight: 500;
+}
+
+.modal-content p {
+    font-weight: 300;
+}
+
+.modal-content.warning {
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content.warning h3 {
+    color: #ff9800;
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.modal-buttons button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+#confirmEmail {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+#cancelEmail {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+#warningOk {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+}
+
+#emailInput {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#previewSelection {
+    background-color: #2196F3;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#previewSelection:hover {
+    background-color: #1976D2;
+}
+
+.preview-content {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    white-space: pre-line;
+}
