@@ -13,64 +13,64 @@ document.addEventListener('DOMContentLoaded', () => {
             address: 'Plaza Altabrisa, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9989,-92.9445'
+            coords: 'https://maps.app.goo.gl/eJ5qXxpdnLrDW94X6'
         },
         'americas': {
             address: 'Plaza Americas, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9876,-92.9301'
+            coords: 'https://maps.app.goo.gl/mt23ET1rjPhie6UR6'
         },
         'angeles': {
             address: 'Los Ángeles #123, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9912,-92.9334'
+            coords: 'https://maps.app.goo.gl/UzFEfe9GS9nRxdj29'
         },
         'centro': {
             address: 'Centro #456, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9898,-92.9199'
+            coords: 'https://maps.app.goo.gl/ZjZscT8gYYbGDQF96'
         },
         'cristal': {
             address: 'Plaza Cristal, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9845,-92.9367'
+            coords: 'https://maps.app.goo.gl/MW4tJ5fPgC6WDHxs6'
         },
         'galerias': {
             address: 'Galerías Tabasco, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9923,-92.9456'
+            coords: 'https://maps.app.goo.gl/D6AC44cpbLnXjgiJ9'
         },
         'deportiva': {
             address: 'Av. Deportiva #345, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9867,-92.9289'
+            coords: 'https://maps.app.goo.gl/kAAXKwm3B2rvdyWw8'
         },
         'guayabal': {
             address: 'Calle Guayabal #678, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9934,-92.9412'
+            coords: 'https://maps.app.goo.gl/D6AC44cpbLnXjgiJ9'
         },
         'olmeca': {
             address: 'Av. Olmeca #901, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9878,-92.9345'
+            coords: 'https://maps.app.goo.gl/3QzKpmc4P6UV2z339'
         },
         'pista': {
             address: 'Av. Principal #432, Villahermosa',
             amount: '$200',
             model: 'cafeteria',
-            coords: '17.9901,-92.9378'
+            coords: 'https://maps.app.goo.gl/uAcf5SM4yzdVJk8p8'
         },
         'usuma': {
-            address: 'Calle Usumacinta #765, Villahermosa',
+            address: 'https://maps.app.goo.gl/8Zt1LC5ZCrhdC1hD6',
             amount: '$200',
             model: 'cafeteria',
             coords: '17.9856,-92.9323'
@@ -79,31 +79,31 @@ document.addEventListener('DOMContentLoaded', () => {
             address: 'Av. Deportiva #098, Villahermosa',
             amount: '$200',
             model: 'movil',
-            coords: '17.9867,-92.9289'
+            coords: 'https://maps.app.goo.gl/kAAXKwm3B2rvdyWw8'
         },
         'movil-venta': {
             address: 'Carretera La Venta Km 2',
             amount: '$200',
             model: 'movil',
-            coords: '18.0012,-92.9501'
+            coords: 'https://maps.app.goo.gl/8tkHs75k7tCGYu3n8'
         },
         'walmart-carrizal': {
             address: 'Av. Carrizal #321, Villahermosa',
             amount: '$200',
             model: 'expres',
-            coords: '17.9845,-92.9367'
+            coords: 'https://maps.app.goo.gl/un9hfx8Wm9vBYHey6'
         },
         'walmart-deportiva': {
             address: 'Av. Deportiva #654, Villahermosa',
             amount: '$200',
             model: 'expres',
-            coords: '17.9867,-92.9289'
+            coords: 'https://maps.app.goo.gl/XRb2dUYZyQWN1pzo7'
         },
         'walmart-universidad': {
             address: 'Av. Universidad #987, Villahermosa',
             amount: '$200',
             model: 'expres',
-            coords: '17.9923,-92.9456'
+            coords: 'https://maps.app.goo.gl/A65jKcmLXsX6GyGJ9'
         }
     };
 
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `📍 ${locationName}\n` +
                     `   • Monto autorizado: ${data.amount}\n` +
                     `   • Dirección: ${data.address}\n` +
-                    `   • Ver en Maps: https://www.google.com/maps?q=${data.coords}\n` +
+                    `   • Ver en Maps: ${data.coords}\n` +
                     `   • Modelo: ${data.model.charAt(0).toUpperCase() + data.model.slice(1)}\n`
                 );
             }
