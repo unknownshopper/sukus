@@ -171,11 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
                 const locationId = checkbox.id;
-                const locationName = checkbox.nextElementSibling.textContent;
+                const locationName = checkbox.nextElementSibling.textContent.toUpperCase();
                 const data = locationData[locationId];
                 selectedLocations.push(
-                    `📍 ${locationName}\n` +
-                    `   • Monto autorizado: ${data.amount}\n` +
+                    `📍 <strong>${locationName}</strong>\n` +
+                    `   • Monto <strong>MÁXIMO</strong> autorizado: ${data.amount}\n` +
                     `   • Dirección: ${data.address}\n` +
                     `   • Ver en Maps: ${data.coords}\n` +
                     `   • Modelo: ${data.model.charAt(0).toUpperCase() + data.model.slice(1)}\n`
