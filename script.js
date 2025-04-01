@@ -4,76 +4,144 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkboxes = document.querySelectorAll('ul input[type="checkbox"]');
     const sendEmailButton = document.getElementById('sendEmail');
     const unselectAllButton = document.getElementById('unselectAll');
+    const previewModal = document.getElementById('previewModal');
+    const emailModal = document.getElementById('emailModal');
 
     // Location data
     const locationData = {
         'altabrisa': {
             address: 'Plaza Altabrisa, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9989,-92.9445'
         },
         'americas': {
             address: 'Plaza Americas, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9876,-92.9301'
         },
         'angeles': {
             address: 'Los Ángeles #123, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9912,-92.9334'
         },
         'centro': {
             address: 'Centro #456, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9898,-92.9199'
         },
         'cristal': {
             address: 'Plaza Cristal, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9845,-92.9367'
         },
         'galerias': {
             address: 'Galerías Tabasco, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9923,-92.9456'
         },
         'deportiva': {
             address: 'Av. Deportiva #345, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9867,-92.9289'
         },
         'guayabal': {
             address: 'Calle Guayabal #678, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9934,-92.9412'
         },
         'olmeca': {
             address: 'Av. Olmeca #901, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9878,-92.9345'
         },
         'pista': {
             address: 'Av. Principal #432, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9901,-92.9378'
         },
         'usuma': {
             address: 'Calle Usumacinta #765, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'cafeteria',
+            coords: '17.9856,-92.9323'
         },
         'movil-deportiva': {
             address: 'Av. Deportiva #098, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'movil',
+            coords: '17.9867,-92.9289'
         },
         'movil-venta': {
             address: 'Carretera La Venta Km 2',
-            amount: '$200'
+            amount: '$200',
+            model: 'movil',
+            coords: '18.0012,-92.9501'
         },
         'walmart-carrizal': {
             address: 'Av. Carrizal #321, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'expres',
+            coords: '17.9845,-92.9367'
         },
         'walmart-deportiva': {
             address: 'Av. Deportiva #654, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'expres',
+            coords: '17.9867,-92.9289'
         },
         'walmart-universidad': {
             address: 'Av. Universidad #987, Villahermosa',
-            amount: '$200'
+            amount: '$200',
+            model: 'expres',
+            coords: '17.9923,-92.9456'
         }
     };
 
-    // Checkbox event handlers
+    // Modal handlers
+    document.getElementById('closePreview').addEventListener('click', () => {
+        previewModal.style.display = 'none';
+        emailModal.style.display = 'block';
+    });
+
+    document.getElementById('confirmEmail').addEventListener('click', () => {
+        const emailInput = document.getElementById('emailInput');
+        const recipientEmail = emailInput.value.trim();
+        
+        if (!recipientEmail) {
+            alert('Por favor ingrese un correo electrónico');
+            return;
+        }
+
+        const mailtoLink = `mailto:${recipientEmail}?subject=Rutas Café La Cabaña - ${new Date().toLocaleDateString('es-MX')}&body=` +
+            encodeURIComponent(
+                `Buenos días,\n\n` +
+                `Por medio del presente se autoriza el gasto para las siguientes ubicaciones:\n\n` +
+                `${document.getElementById('previewContent').textContent}\n\n` +
+                `Saludos cordiales.`
+            );
+        emailModal.style.display = 'none';
+        window.location.href = mailtoLink;
+    });
+
+    document.getElementById('cancelEmail').addEventListener('click', () => {
+        emailModal.style.display = 'none';
+    });
+
+    document.getElementById('warningOk').addEventListener('click', () => {
+        document.getElementById('warningModal').style.display = 'none';
+    });
+
+    // Checkbox handlers
     selectAllCheckbox.addEventListener('change', () => {
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAllCheckbox.checked;
@@ -88,15 +156,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Warning modal handler
-    document.getElementById('warningOk').addEventListener('click', () => {
-        document.getElementById('warningModal').style.display = 'none';
+    unselectAllButton.addEventListener('click', () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        selectAllCheckbox.checked = false;
+        saveSelections();
     });
 
-    // Main send email functionality
+    // Main email functionality
     sendEmailButton.addEventListener('click', () => {
         const selectedLocations = [];
-        const today = new Date().toLocaleDateString('es-MX');
         
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
@@ -105,8 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = locationData[locationId];
                 selectedLocations.push(
                     `📍 ${locationName}\n` +
+                    `   • Monto autorizado: ${data.amount}\n` +
                     `   • Dirección: ${data.address}\n` +
-                    `   • Monto autorizado: ${data.amount}\n`
+                    `   • Ver en Maps: https://www.google.com/maps?q=${data.coords}\n` +
+                    `   • Modelo: ${data.model.charAt(0).toUpperCase() + data.model.slice(1)}\n`
                 );
             }
         });
@@ -116,40 +188,29 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const previewModal = document.getElementById('previewModal');
         const previewContent = document.getElementById('previewContent');
-        previewContent.textContent = selectedLocations.join('\n');
+        previewContent.innerHTML = selectedLocations.join('\n');
         previewModal.style.display = 'block';
+    });
 
-        // Modal button handlers
-        document.getElementById('closePreview').onclick = () => {
-            previewModal.style.display = 'none';
-            document.getElementById('emailModal').style.display = 'block';
-        };
+    document.getElementById('confirmEmail').addEventListener('click', () => {
+        const emailInput = document.getElementById('emailInput');
+        const recipientEmail = emailInput.value.trim();
+        
+        if (!recipientEmail) {
+            alert('Por favor ingrese un correo electrónico');
+            return;
+        }
 
-        document.getElementById('confirmEmail').onclick = () => {
-            const emailInput = document.getElementById('emailInput');
-            const recipientEmail = emailInput.value.trim();
-            
-            if (!recipientEmail) {
-                alert('Por favor ingrese un correo electrónico');
-                return;
-            }
-
-            const mailtoLink = `mailto:${recipientEmail}?subject=Rutas Café La Cabaña - ${today}&body=` +
-                encodeURIComponent(
-                    `Buenos días,\n\n` +
-                    `Por medio del presente se autoriza el gasto para las siguientes ubicaciones:\n\n` +
-                    `${selectedLocations.join('\n')}\n\n` +
-                    `Saludos cordiales.`
-                );
-            document.getElementById('emailModal').style.display = 'none';
-            window.location.href = mailtoLink;
-        };
-
-        document.getElementById('cancelEmail').onclick = () => {
-            document.getElementById('emailModal').style.display = 'none';
-        };
+        const mailtoLink = `mailto:${recipientEmail}?subject=Rutas Café La Cabaña - ${new Date().toLocaleDateString('es-MX')}&body=` +
+            encodeURIComponent(
+                `Buenos días,\n\n` +
+                `Por medio del presente se autoriza el gasto para las siguientes ubicaciones:\n\n` +
+                `${document.getElementById('previewContent').textContent}\n\n` +
+                `Saludos cordiales.`
+            );
+        emailModal.style.display = 'none';
+        window.location.href = mailtoLink;
     });
 
     // Utility functions
@@ -176,13 +237,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize
     loadSelections();
-
-    // Add unselect functionality
-    unselectAllButton.addEventListener('click', () => {
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        selectAllCheckbox.checked = false;
-        saveSelections();
-    });
 });
