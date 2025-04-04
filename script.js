@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const unselectAllButton = document.getElementById('unselectAll');
     const previewModal = document.getElementById('previewModal');
     const emailModal = document.getElementById('emailModal');
+    let selectionOrder = []; // Add this here
 
     // Location data
     const locationData = {
@@ -149,28 +150,28 @@ document.addEventListener('DOMContentLoaded', () => {
         saveSelections();
     });
 
+    // Update checkbox event listeners
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                if (!selectionOrder.includes(checkbox.id)) {
+                    selectionOrder.push(checkbox.id);
+                }
+            } else {
+                selectionOrder = selectionOrder.filter(id => id !== checkbox.id);
+            }
             saveSelections();
             updateSelectAllCheckbox();
         });
     });
 
-    unselectAllButton.addEventListener('click', () => {
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        selectAllCheckbox.checked = false;
-        saveSelections();
-    });
-
-    // Main email functionality
+    // Update sendEmail click handler
     sendEmailButton.addEventListener('click', () => {
         const selectedLocations = [];
         
-        checkboxes.forEach(checkbox => {
+        selectionOrder.forEach(locationId => {
+            const checkbox = document.getElementById(locationId);
             if (checkbox.checked) {
-                const locationId = checkbox.id;
                 const locationName = checkbox.nextElementSibling.textContent.toUpperCase();
                 const data = locationData[locationId];
                 selectedLocations.push(
@@ -193,46 +194,27 @@ document.addEventListener('DOMContentLoaded', () => {
         previewModal.style.display = 'block';
     });
 
-    document.getElementById('confirmEmail').addEventListener('click', () => {
-        const emailInput = document.getElementById('emailInput');
-        const recipientEmail = emailInput.value.trim();
-        
-        if (!recipientEmail) {
-            alert('Por favor ingrese un correo electrónico');
-            return;
-        }
-
-        const mailtoLink = `mailto:${recipientEmail}?subject=Rutas Café La Cabaña - ${new Date().toLocaleDateString('es-MX')}&body=` +
-            encodeURIComponent(
-                `Buenos días,\n\n` +
-                `Por medio del presente se autoriza el gasto para las siguientes ubicaciones:\n\n` +
-                `${document.getElementById('previewContent').textContent}\n\n` +
-                `Saludos cordiales.`
-            );
-        emailModal.style.display = 'none';
-        window.location.href = mailtoLink;
-    });
-
-    // Utility functions
+    // Update utility functions
     function saveSelections() {
-        const selections = {};
+        const selections = {
+            checked: {},
+            order: selectionOrder
+        };
         checkboxes.forEach(checkbox => {
-            selections[checkbox.id] = checkbox.checked;
+            selections.checked[checkbox.id] = checkbox.checked;
         });
         localStorage.setItem('locationSelections', JSON.stringify(selections));
     }
 
     function loadSelections() {
-        const savedSelections = JSON.parse(localStorage.getItem('locationSelections') || '{}');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = savedSelections[checkbox.id] || false;
-        });
+        const saved = JSON.parse(localStorage.getItem('locationSelections') || '{}');
+        if (saved.checked) {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = saved.checked[checkbox.id] || false;
+            });
+            selectionOrder = saved.order || [];
+        }
         updateSelectAllCheckbox();
-    }
-
-    function updateSelectAllCheckbox() {
-        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-        selectAllCheckbox.checked = allChecked;
     }
 
     // Initialize
