@@ -146,7 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
     selectAllCheckbox.addEventListener('change', () => {
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAllCheckbox.checked;
+            if (selectAllCheckbox.checked && !selectionOrder.includes(checkbox.id)) {
+                selectionOrder.push(checkbox.id);
+            }
         });
+        if (!selectAllCheckbox.checked) {
+            selectionOrder = [];
+        }
+        saveSelections();
+    });
+
+    unselectAllButton.addEventListener('click', () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        selectAllCheckbox.checked = false;
+        selectionOrder = []; // Clear the selection order
         saveSelections();
     });
 
